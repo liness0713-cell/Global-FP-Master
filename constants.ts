@@ -13,6 +13,7 @@ export const EXAM_TYPES = [
 
 export interface FPCategory {
   id: string;
+  part: number;
   en: string;
   ja: string;
   cn: string;
@@ -23,6 +24,7 @@ export interface FPCategory {
 export const FP_CATEGORIES_DATA: FPCategory[] = [
   { 
     id: "life_planning", 
+    part: 1,
     en: "Life Planning", 
     ja: "ライフプランニングと資金計画", 
     cn: "人生规划与资金计划",
@@ -31,6 +33,7 @@ export const FP_CATEGORIES_DATA: FPCategory[] = [
   },
   { 
     id: "risk_management", 
+    part: 2,
     en: "Risk Management", 
     ja: "リスク管理", 
     cn: "风险管理",
@@ -39,6 +42,7 @@ export const FP_CATEGORIES_DATA: FPCategory[] = [
   },
   { 
     id: "asset_management", 
+    part: 3,
     en: "Financial Asset Management", 
     ja: "金融資産運用", 
     cn: "金融资产运用",
@@ -47,6 +51,7 @@ export const FP_CATEGORIES_DATA: FPCategory[] = [
   },
   { 
     id: "tax_planning", 
+    part: 4,
     en: "Tax Planning", 
     ja: "タックスプランニング", 
     cn: "税务规划",
@@ -55,6 +60,7 @@ export const FP_CATEGORIES_DATA: FPCategory[] = [
   },
   { 
     id: "real_estate", 
+    part: 5,
     en: "Real Estate", 
     ja: "不動産", 
     cn: "房地产",
@@ -63,6 +69,7 @@ export const FP_CATEGORIES_DATA: FPCategory[] = [
   },
   { 
     id: "inheritance", 
+    part: 6,
     en: "Inheritance / Succession", 
     ja: "相続・事業承継", 
     cn: "继承与事业承继",

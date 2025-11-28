@@ -63,9 +63,22 @@ const App: React.FC = () => {
             <p className="text-gray-400 text-sm">
               &copy; {new Date().getFullYear()} Global FP Master. Powered by Google Gemini.
             </p>
-            <p className="text-gray-300 text-xs mt-2">
+            <p className="text-gray-300 text-xs mt-2 mb-4">
               Disclaimer: Content is AI-generated for study practice purposes.
             </p>
+            
+            {/* Friend Link */}
+            <div className="text-sm text-gray-500 pt-4 border-t border-gray-100 w-full max-w-xs mx-auto">
+              <span className="text-xs text-gray-400 mr-2">Friend Link:</span>
+              <a 
+                href="https://my-portfolio-beige-five-56.vercel.app/" 
+                target="_blank" 
+                rel="noopener noreferrer"
+                className="text-indigo-500 hover:text-indigo-700 hover:underline transition-colors font-medium"
+              >
+                千葉２狗 🐶
+              </a>
+            </div>
          </div>
       </footer>
     </div>

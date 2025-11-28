@@ -59,12 +59,12 @@ export const Home: React.FC<HomeProps> = ({ onStart }) => {
       <div className="grid lg:grid-cols-12 gap-8">
         {/* Left Column: Comprehensive Exam */}
         <div className="lg:col-span-4 space-y-6">
-          <div className="bg-white p-6 rounded-2xl shadow-sm border border-gray-200 h-full flex flex-col">
+          <div className="bg-white p-6 rounded-2xl shadow-sm border border-gray-200 h-full flex flex-col sticky top-8">
             <h2 className="text-xl font-bold text-gray-800 mb-2 flex items-center gap-2">
-              <span className="text-2xl">📝</span> Comprehensive Exam
+              <span className="text-2xl">📝</span> Mock Exam
             </h2>
             <p className="text-gray-500 text-sm mb-6">
-              Simulate the real exam environment with random questions from all categories mixed together.
+              Simulate the real exam environment with random questions from all categories.
             </p>
 
             <div className="space-y-3 mb-6">
@@ -99,34 +99,50 @@ export const Home: React.FC<HomeProps> = ({ onStart }) => {
           </div>
         </div>
 
-        {/* Right Column: Category Drills */}
+        {/* Right Column: Category Drills (Study Outline) */}
         <div className="lg:col-span-8">
           <div className="bg-white p-6 rounded-2xl shadow-sm border border-gray-200">
-            <h2 className="text-xl font-bold text-gray-800 mb-2 flex items-center gap-2">
-              <span className="text-2xl">📚</span> Study by Field
+            <h2 className="text-xl font-bold text-gray-800 mb-6 flex items-center gap-2 pb-4 border-b border-gray-100">
+              <span className="text-2xl">📚</span> Study Outline / 学習大綱
             </h2>
-            <p className="text-gray-500 text-sm mb-6">
-              Focus on specific weaknesses. Select a field to start a specialized drill.
-            </p>
             
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <div className="space-y-4">
               {FP_CATEGORIES_DATA.map((cat) => (
                 <button
                   key={cat.id}
                   onClick={() => onStart(selectedLevel, selectedType, cat.ja)}
                   className={`
-                    p-4 rounded-xl border border-gray-100 hover:border-gray-300 hover:shadow-md transition-all text-left group
-                    ${cat.color.replace('text-', 'bg-opacity-10 ')}
+                    w-full p-4 rounded-xl border border-gray-100 hover:border-gray-300 hover:shadow-md transition-all text-left group
+                    flex items-center gap-4 bg-white hover:bg-gray-50
                   `}
                 >
-                  <div className="flex items-start justify-between mb-2">
-                    <span className="text-3xl">{cat.icon}</span>
-                    <span className={`text-xs px-2 py-1 rounded-full bg-white font-bold opacity-0 group-hover:opacity-100 transition-opacity ${cat.color.split(" ")[1]}`}>
-                      START
-                    </span>
+                  {/* Icon & Part Number */}
+                  <div className={`
+                    flex-shrink-0 w-16 h-16 flex flex-col items-center justify-center rounded-lg
+                    ${cat.color.replace('text-', 'bg-opacity-20 ')}
+                  `}>
+                    <span className="text-2xl mb-1">{cat.icon}</span>
+                    <span className={`text-[10px] font-bold uppercase ${cat.color.split(" ")[1]}`}>Part {cat.part}</span>
                   </div>
-                  <h3 className="font-bold text-gray-900 leading-tight mb-1">{cat.ja}</h3>
-                  <p className="text-xs text-gray-500">{cat.en}</p>
+
+                  {/* Text Content */}
+                  <div className="flex-grow">
+                    <h3 className="font-bold text-gray-900 text-lg leading-tight mb-1 group-hover:text-indigo-600 transition-colors">
+                      {cat.ja}
+                    </h3>
+                    <div className="flex flex-wrap gap-x-4 text-xs text-gray-500">
+                      <span>{cat.en}</span>
+                      <span className="text-gray-300">|</span>
+                      <span>{cat.cn}</span>
+                    </div>
+                  </div>
+
+                  {/* Arrow Action */}
+                  <div className="flex-shrink-0 opacity-0 group-hover:opacity-100 transition-opacity -translate-x-2 group-hover:translate-x-0">
+                    <div className="w-8 h-8 rounded-full bg-white border border-gray-200 flex items-center justify-center text-gray-400">
+                      <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" /></svg>
+                    </div>
+                  </div>
                 </button>
               ))}
             </div>
@@ -136,7 +152,7 @@ export const Home: React.FC<HomeProps> = ({ onStart }) => {
 
       <div className="mt-16 text-center">
         <p className="text-gray-400 text-sm">
-           Select <span className="font-bold text-gray-600">実技 (Practical)</span> or <span className="font-bold text-gray-600">学科 (Academic)</span> in the left panel to change question style for all modes.
+           Select <span className="font-bold text-gray-600">実技 (Practical)</span> or <span className="font-bold text-gray-600">学科 (Academic)</span> in the left panel to change question style for both modes.
         </p>
       </div>
     </div>
