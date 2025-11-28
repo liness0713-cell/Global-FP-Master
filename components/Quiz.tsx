@@ -117,23 +117,30 @@ export const Quiz: React.FC<QuizProps> = ({ level, type, category, onBack }) => 
           {/* Options Grid */}
           <div className="grid grid-cols-1 gap-4">
             {question.options.map((option) => {
-              let stateClass = "border-gray-200 hover:border-indigo-400 hover:bg-indigo-50 bg-white";
+              let stateClass = "border-gray-200 hover:border-indigo-400 hover:bg-indigo-50 bg-white cursor-pointer";
               
               if (selectedOptionId) {
                 if (option.id === question.correctOptionId) {
-                  stateClass = "border-green-500 bg-green-50 ring-1 ring-green-500";
+                  stateClass = "border-green-500 bg-green-50 ring-1 ring-green-500 cursor-default";
                 } else if (option.id === selectedOptionId) {
-                  stateClass = "border-red-500 bg-red-50";
+                  stateClass = "border-red-500 bg-red-50 cursor-default";
                 } else {
-                  stateClass = "border-gray-100 opacity-50";
+                  stateClass = "border-gray-100 opacity-50 cursor-default";
                 }
               }
 
               return (
-                <button
+                <div
                   key={option.id}
                   onClick={() => handleOptionClick(option.id)}
-                  disabled={!!selectedOptionId}
+                  role="button"
+                  tabIndex={0}
+                  onKeyDown={(e) => {
+                    if (e.key === 'Enter' || e.key === ' ') {
+                      e.preventDefault();
+                      handleOptionClick(option.id);
+                    }
+                  }}
                   className={`
                     w-full text-left p-5 rounded-xl border-2 transition-all duration-200
                     flex flex-col gap-1 relative
@@ -152,7 +159,7 @@ export const Quiz: React.FC<QuizProps> = ({ level, type, category, onBack }) => 
                        <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M5 13l4 4L19 7" /></svg>
                      </div>
                   )}
-                </button>
+                </div>
               );
             })}
           </div>
