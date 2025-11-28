@@ -7,8 +7,8 @@ const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
 const trilingualTextSchema: Schema = {
   type: Type.OBJECT,
   properties: {
-    ja: { type: Type.STRING, description: "Japanese text (Kanji mixed)" },
-    ja_kana: { type: Type.STRING, description: "Japanese text (Hiragana/Katakana reading only) for study purposes" },
+    ja: { type: Type.STRING, description: "Japanese text containing HTML <ruby> tags for ALL Kanji (e.g. <ruby>日本<rt>にほん</rt></ruby>)" },
+    ja_kana: { type: Type.STRING, description: "Full Hiragana reading (backup)" },
     en: { type: Type.STRING, description: "English translation" },
     cn: { type: Type.STRING, description: "Simplified Chinese translation" },
   },
@@ -58,11 +58,14 @@ export const generateQuestion = async (level: FPLevel, type: ExamType, specificC
     
     Requirements:
     1. The question must be challenging and appropriate for the selected grade level.
-    2. Provide content in Japanese (Normal Kanji), Japanese (Kana Reading/Furigana style full text), English, and Simplified Chinese.
-    3. Ensure the Chinese and English translations are natural and accurate specialized financial terminology.
-    4. For "Academic" type, create a multiple-choice question (4 options).
-    5. For "Practical" type, create a scenario-based calculation or logic question (still multiple choice format for this app).
-    6. Provide a detailed explanation of why the answer is correct and others are wrong.
+    2. **CRITICAL**: For the Japanese text ('ja' field), you MUST use HTML <ruby> tags for EVERY Kanji word to provide readings. 
+       Example: "<ruby>減価償却費<rt>げんかしょうきゃくひ</rt></ruby>は<ruby>計算<rt>けいさん</rt></ruby>される"
+       Do not use parentheses, use real HTML tags.
+    3. Provide content in English and Simplified Chinese as well.
+    4. Ensure translations are natural and use accurate specialized financial terminology.
+    5. For "Academic" type, create a multiple-choice question (4 options).
+    6. For "Practical" type, create a scenario-based calculation or logic question.
+    7. Provide a detailed explanation.
   `;
 
   try {

@@ -24,6 +24,19 @@
       ::-webkit-scrollbar-thumb:hover {
         background: #94a3b8;
       }
+
+      /* Ruby Tag Toggling logic */
+      .ruby-text rt {
+        color: #6366f1; /* Indigo-500 for readings */
+        font-size: 0.6em;
+        font-weight: normal;
+        user-select: none;
+      }
+
+      /* When the parent has class 'hide-ruby', hide the rt tags */
+      .hide-ruby rt {
+        display: none;
+      }
     </style>
   <script type="importmap">
 {

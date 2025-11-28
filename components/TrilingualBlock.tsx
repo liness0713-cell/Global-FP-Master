@@ -20,10 +20,11 @@ export const TrilingualBlock: React.FC<TrilingualBlockProps> = ({
     <div className={`space-y-3 ${className}`}>
       {label && <div className="text-xs uppercase tracking-wider text-gray-400 font-bold mb-1">{label}</div>}
       
-      {/* Japanese Section */}
-      <div className={`text-lg md:text-xl font-bold leading-relaxed ${primaryColor}`}>
-        {showKana ? content.ja_kana : content.ja}
-      </div>
+      {/* Japanese Section with Ruby Toggle */}
+      <div 
+        className={`text-lg md:text-xl font-bold leading-relaxed ruby-text ${primaryColor} ${!showKana ? 'hide-ruby' : ''}`}
+        dangerouslySetInnerHTML={{ __html: content.ja }}
+      />
 
       {/* Translations Group */}
       <div className="space-y-1.5 pl-3 border-l-2 border-gray-200">
