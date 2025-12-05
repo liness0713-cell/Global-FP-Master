@@ -7,11 +7,11 @@ import { LanguageToggle } from './LanguageToggle';
 interface QuizProps {
   level: FPLevel;
   type: ExamType;
-  category: string | null;
+  chapter: string | null;
   onBack: () => void;
 }
 
-export const Quiz: React.FC<QuizProps> = ({ level, type, category, onBack }) => {
+export const Quiz: React.FC<QuizProps> = ({ level, type, chapter, onBack }) => {
   const [loading, setLoading] = useState(true);
   const [question, setQuestion] = useState<Question | null>(null);
   const [selectedOptionId, setSelectedOptionId] = useState<string | null>(null);
@@ -28,14 +28,14 @@ export const Quiz: React.FC<QuizProps> = ({ level, type, category, onBack }) => 
     setIsCorrect(null);
     
     try {
-      const q = await generateQuestion(level, type, category);
+      const q = await generateQuestion(level, type, chapter);
       setQuestion(q);
     } catch (err) {
       setError("Failed to load question. Please check your connection or API limit.");
     } finally {
       setLoading(false);
     }
-  }, [level, type, category]);
+  }, [level, type, chapter]);
 
   useEffect(() => {
     fetchQuestion();
@@ -70,8 +70,8 @@ export const Quiz: React.FC<QuizProps> = ({ level, type, category, onBack }) => 
           <div className="h-6 w-px bg-gray-200"></div>
           <div>
             <div className="text-xs text-gray-400 font-bold uppercase">Mode</div>
-            <div className="text-sm font-bold text-gray-800">
-               {category ? category : "Comprehensive"}
+            <div className="text-sm font-bold text-gray-800 max-w-[200px] md:max-w-xs truncate">
+               {chapter ? chapter : "Comprehensive Mock Exam"}
             </div>
           </div>
         </div>

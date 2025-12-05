@@ -3,7 +3,7 @@ import { FPLevel, ExamType } from '../types';
 import { LEVELS, EXAM_TYPES, FP_CATEGORIES_DATA } from '../constants';
 
 interface HomeProps {
-  onStart: (level: FPLevel, type: ExamType, category?: string) => void;
+  onStart: (level: FPLevel, type: ExamType, categoryId?: string) => void;
 }
 
 export const Home: React.FC<HomeProps> = ({ onStart }) => {
@@ -110,7 +110,7 @@ export const Home: React.FC<HomeProps> = ({ onStart }) => {
               {FP_CATEGORIES_DATA.map((cat) => (
                 <button
                   key={cat.id}
-                  onClick={() => onStart(selectedLevel, selectedType, cat.ja)}
+                  onClick={() => onStart(selectedLevel, selectedType, cat.id)}
                   className={`
                     w-full p-4 rounded-xl border border-gray-100 hover:border-gray-300 hover:shadow-md transition-all text-left group
                     flex items-center gap-4 bg-white hover:bg-gray-50

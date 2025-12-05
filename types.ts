@@ -30,8 +30,20 @@ export interface Question {
   explanation: TrilingualText;
 }
 
+export interface StudySection {
+  title: TrilingualText;
+  content: TrilingualText;
+}
+
+export interface StudyNote {
+  id: string;
+  chapter: string;
+  title: TrilingualText;
+  sections: StudySection[];
+}
+
 export interface AppState {
   currentLevel: FPLevel | null;
   currentExamType: ExamType | null;
-  view: 'home' | 'quiz';
+  view: 'home' | 'quiz' | 'chapters' | 'study';
 }

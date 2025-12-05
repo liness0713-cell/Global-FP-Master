@@ -1,24 +1,53 @@
 import React, { useState } from 'react';
 import { Home } from './components/Home';
 import { Quiz } from './components/Quiz';
+import { StudyView } from './components/StudyView';
+import { ChapterSelect } from './components/ChapterSelect';
 import { FPLevel, ExamType } from './types';
+
+type ViewState = 'home' | 'chapters' | 'quiz' | 'study';
 
 const App: React.FC = () => {
   const [currentLevel, setCurrentLevel] = useState<FPLevel | null>(null);
   const [currentType, setCurrentType] = useState<ExamType | null>(null);
-  const [currentCategory, setCurrentCategory] = useState<string | null>(null);
-  const [isQuizActive, setIsQuizActive] = useState(false);
+  const [currentCategoryId, setCurrentCategoryId] = useState<string | null>(null);
+  const [currentChapter, setCurrentChapter] = useState<string | null>(null);
+  const [view, setView] = useState<ViewState>('home');
 
-  const handleStart = (level: FPLevel, type: ExamType, category?: string) => {
+  const handleStart = (level: FPLevel, type: ExamType, categoryId?: string) => {
     setCurrentLevel(level);
     setCurrentType(type);
-    setCurrentCategory(category || null);
-    setIsQuizActive(true);
+    
+    if (categoryId) {
+      // If a category is selected, go to Chapter Select screen
+      setCurrentCategoryId(categoryId);
+      setView('chapters');
+    } else {
+      // If Mock Exam (no category), go straight to Quiz
+      setCurrentCategoryId(null);
+      setCurrentChapter(null);
+      setView('quiz');
+    }
   };
 
-  const handleBack = () => {
-    setIsQuizActive(false);
-    setCurrentCategory(null);
+  const handleChapterSelect = (chapterName: string, mode: 'quiz' | 'study') => {
+    setCurrentChapter(chapterName);
+    setView(mode);
+  };
+
+  const handleBackToHome = () => {
+    setView('home');
+    setCurrentCategoryId(null);
+    setCurrentChapter(null);
+  };
+
+  const handleBackToChapters = () => {
+    if (currentCategoryId) {
+      setView('chapters');
+      setCurrentChapter(null);
+    } else {
+      handleBackToHome();
+    }
   };
 
   return (
@@ -27,7 +56,7 @@ const App: React.FC = () => {
       <header className="bg-white border-b border-gray-200 sticky top-0 z-50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center h-16">
-            <div className="flex-shrink-0 flex items-center gap-2 cursor-pointer" onClick={handleBack}>
+            <div className="flex-shrink-0 flex items-center gap-2 cursor-pointer" onClick={handleBackToHome}>
               <div className="w-8 h-8 bg-indigo-600 rounded-lg flex items-center justify-center text-white font-bold shadow-sm">
                 FP
               </div>
@@ -45,14 +74,33 @@ const App: React.FC = () => {
 
       {/* Main Content */}
       <main>
-        {isQuizActive && currentLevel && currentType ? (
+        {view === 'quiz' && currentLevel && currentType && (
           <Quiz 
             level={currentLevel} 
             type={currentType} 
-            category={currentCategory}
-            onBack={handleBack} 
+            chapter={currentChapter} // Pass the specific chapter
+            onBack={handleBackToChapters} 
           />
-        ) : (
+        )}
+
+        {view === 'study' && currentLevel && currentChapter && (
+           <StudyView
+             level={currentLevel}
+             chapter={currentChapter}
+             onBack={handleBackToChapters}
+           />
+        )}
+
+        {view === 'chapters' && currentLevel && currentCategoryId && (
+          <ChapterSelect
+            level={currentLevel}
+            categoryId={currentCategoryId}
+            onBack={handleBackToHome}
+            onSelectChapter={handleChapterSelect}
+          />
+        )}
+
+        {view === 'home' && (
           <Home onStart={handleStart} />
         )}
       </main>
