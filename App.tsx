@@ -30,8 +30,14 @@ const App: React.FC = () => {
     }
   };
 
-  const handleChapterSelect = (chapterName: string, mode: 'quiz' | 'study') => {
+  const handleChapterSelect = (chapterName: string, mode: 'quiz' | 'study', examType?: ExamType) => {
     setCurrentChapter(chapterName);
+    
+    // If a specific exam type is requested (e.g. Practical from chapter list), update it.
+    if (examType) {
+      setCurrentType(examType);
+    }
+    
     setView(mode);
   };
 

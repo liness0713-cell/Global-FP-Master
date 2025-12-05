@@ -1,12 +1,12 @@
 import React from 'react';
-import { FPLevel } from '../types';
+import { FPLevel, ExamType } from '../types';
 import { FP_CATEGORIES_DATA, FP_CHAPTERS } from '../constants';
 
 interface ChapterSelectProps {
   level: FPLevel;
   categoryId: string;
   onBack: () => void;
-  onSelectChapter: (chapterName: string, mode: 'quiz' | 'study') => void;
+  onSelectChapter: (chapterName: string, mode: 'quiz' | 'study', type?: ExamType) => void;
 }
 
 // Hardcoded Ruby titles for the Chapter Page Header
@@ -68,9 +68,9 @@ export const ChapterSelect: React.FC<ChapterSelectProps> = ({
           <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
         </div>
         <p className="text-sm text-indigo-800">
-          Choose a mode to proceed: <strong>Study</strong> to learn key concepts, or <strong>Quiz</strong> to test your knowledge.
+          Choose a mode to proceed: <strong>Study</strong> to learn key concepts, or practice with <strong>Academic</strong> (multiple choice) or <strong>Practical</strong> (calculation/scenario) quizzes.
           <br/>
-          <span className="text-xs opacity-75">「学習」で知識を深めるか、「クイズ」で理解度を確認してください。</span>
+          <span className="text-xs opacity-75">「学習」で知識を深めるか、「学科」（択一式）、「実技」（計算・応用）で演習してください。</span>
         </p>
       </div>
 
@@ -78,19 +78,24 @@ export const ChapterSelect: React.FC<ChapterSelectProps> = ({
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         {/* "All / Random" Option */}
         <div className="col-span-1 md:col-span-2 p-6 rounded-xl border-2 border-dashed border-indigo-300 bg-indigo-50/50 flex flex-col md:flex-row items-center justify-between gap-4">
-           <div>
+           <div className="flex-grow">
               <h3 className="text-lg font-bold text-indigo-700">
                 🎲 Comprehensive Practice
               </h3>
               <p className="text-xs text-indigo-500">Test yourself with random questions from this entire category.</p>
            </div>
-           <div className="flex gap-2 w-full md:w-auto">
+           <div className="flex gap-2 w-full md:w-auto flex-shrink-0">
              <button
-               onClick={() => onSelectChapter(categoryData.ja, 'quiz')}
-               className="flex-1 md:flex-none px-6 py-2 bg-indigo-600 hover:bg-indigo-700 text-white rounded-lg font-bold shadow-sm transition-colors flex items-center justify-center gap-2"
+               onClick={() => onSelectChapter(categoryData.ja, 'quiz', ExamType.ACADEMIC)}
+               className="flex-1 md:flex-none px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white rounded-lg font-bold shadow-sm transition-colors text-sm whitespace-nowrap"
              >
-               <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" /></svg>
-               Quiz
+               学科 Quiz
+             </button>
+             <button
+               onClick={() => onSelectChapter(categoryData.ja, 'quiz', ExamType.PRACTICAL)}
+               className="flex-1 md:flex-none px-4 py-2 bg-orange-600 hover:bg-orange-700 text-white rounded-lg font-bold shadow-sm transition-colors text-sm whitespace-nowrap"
+             >
+               実技 Quiz
              </button>
            </div>
         </div>
@@ -111,19 +116,30 @@ export const ChapterSelect: React.FC<ChapterSelectProps> = ({
               </h3>
             </div>
             
-            <div className="grid grid-cols-2 gap-2 pt-4 border-t border-gray-50 mt-2">
+            <div className="flex flex-col gap-2 pt-4 border-t border-gray-50 mt-2">
+               {/* Row 1: Study */}
                <button
                  onClick={() => onSelectChapter(chapter, 'study')}
-                 className="py-2.5 px-4 rounded-lg bg-emerald-50 text-emerald-700 hover:bg-emerald-100 hover:text-emerald-800 font-bold text-sm transition-colors flex items-center justify-center gap-1.5"
+                 className="w-full py-2 px-4 rounded-lg bg-emerald-50 text-emerald-700 hover:bg-emerald-100 hover:text-emerald-800 font-bold text-sm transition-colors flex items-center justify-center gap-1.5"
                >
                  <span>📖</span> Study
                </button>
-               <button
-                 onClick={() => onSelectChapter(chapter, 'quiz')}
-                 className="py-2.5 px-4 rounded-lg bg-indigo-50 text-indigo-700 hover:bg-indigo-100 hover:text-indigo-800 font-bold text-sm transition-colors flex items-center justify-center gap-1.5"
-               >
-                 <span>📝</span> Quiz
-               </button>
+               
+               {/* Row 2: Quizzes */}
+               <div className="grid grid-cols-2 gap-2">
+                 <button
+                   onClick={() => onSelectChapter(chapter, 'quiz', ExamType.ACADEMIC)}
+                   className="py-2 px-2 rounded-lg bg-indigo-50 text-indigo-700 hover:bg-indigo-100 hover:text-indigo-800 font-bold text-sm transition-colors flex items-center justify-center gap-1"
+                 >
+                   <span>📝</span> 学科
+                 </button>
+                 <button
+                   onClick={() => onSelectChapter(chapter, 'quiz', ExamType.PRACTICAL)}
+                   className="py-2 px-2 rounded-lg bg-orange-50 text-orange-700 hover:bg-orange-100 hover:text-orange-800 font-bold text-sm transition-colors flex items-center justify-center gap-1"
+                 >
+                   <span>💻</span> 実技
+                 </button>
+               </div>
             </div>
           </div>
         ))}
